@@ -2,9 +2,9 @@
   "name": "tanishq-portfolio-contact-api",
   "version": "1.0.0",
   "private": true,
-  "main": "contact.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node contact.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

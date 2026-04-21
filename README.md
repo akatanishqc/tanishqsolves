@@ -4,8 +4,8 @@ A responsive single-file personal portfolio website with a Nodemailer-powered co
 
 ## Project Structure
 
-- `portfolio.html` - Main portfolio page (styles and scripts included inline)
-- `contact.js` - Express API for contact form email delivery via Nodemailer
+- `index.html` - Main portfolio page (styles and scripts included inline)
+- `server.js` - Express API for contact form email delivery via Nodemailer
 - `.env` - Local Gmail mail configuration (not committed)
 - `.env.example` - Environment variable template
 - `1000081437.jpg` - Local image asset
@@ -21,7 +21,7 @@ A responsive single-file personal portfolio website with a Nodemailer-powered co
    - `CONTACT_TO_EMAIL` (optional, defaults to `EMAIL_USER`)
 3. Start the backend API:
    - `npm start`
-4. Open `portfolio.html` in your browser.
+4. Open `index.html` in your browser.
 
 The contact form posts to `http://localhost:3000/api/contact` when the Send Message button is clicked.
 

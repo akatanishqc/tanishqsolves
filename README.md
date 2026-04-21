@@ -23,7 +23,10 @@ A responsive single-file personal portfolio website with a Nodemailer-powered co
    - `npm start`
 4. Open `index.html` in your browser.
 
-The contact form posts to `http://localhost:3000/api/contact` when the Send Message button is clicked.
+The contact form auto-selects its backend endpoint:
+
+- Local development (`localhost`/`127.0.0.1`): `http://localhost:3000/api/contact`
+- Production/other hosts: `https://tanishqsolves.onrender.com/api/contact`
 
 ## API Endpoints
 

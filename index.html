@@ -1389,6 +1389,13 @@
         }, 3500);
       }
 
+      var PROD_API_BASE = "https://tanishqsolves.onrender.com";
+      var API_BASE =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+          ? "http://localhost:3000"
+          : PROD_API_BASE;
+
       async function handleSubmit(e) {
         e.preventDefault();
         var form = e.target;
@@ -1401,7 +1408,7 @@
         submitBtn.textContent = "Sending...";
 
         try {
-          var res = await fetch("http://localhost:3000/api/contact", {
+          var res = await fetch(API_BASE + "/api/contact", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

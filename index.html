@@ -421,9 +421,20 @@
           transform 0.2s;
       }
 
-      .project-card:hover {
+      .project-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        border-radius: 16px;
+      }
+
+      .project-card-link:hover .project-card {
         border-color: #aaa;
         transform: translateY(-3px);
+      }
+
+      .project-card-link:hover {
+        outline: none;
       }
 
       .project-tag {
@@ -1016,55 +1027,101 @@
         <p class="eyebrow">Work</p>
         <h2>Projects</h2>
         <div class="projects-grid">
-          <div class="project-card">
-            <span class="project-tag">Mobile App · In Development</span>
-            <h3>VibeRun</h3>
-            <p>
-              Real-world fitness gamification app inspired by Subway Surfers.
-              Players compete on actual streets, track runs via GPS, and race
-              with 3D avatars in augmented city environments.
-            </p>
-            <div class="tech-stack">
-              <span class="tech-pill">Flutter</span>
-              <span class="tech-pill">Firebase</span>
-              <span class="tech-pill">Google Maps</span>
-              <span class="tech-pill">Riverpod</span>
-              <span class="tech-pill">Ready Player Me</span>
+          <a
+            class="project-card-link"
+            href="https://github.com/akatanishqc/pulse"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="project-card">
+              <span class="project-tag">Mobile App · Completed</span>
+              <h3>Pulse</h3>
+              <p>
+                Hyperlocal social discovery app powered by Bluetooth Low Energy.
+                Enables real-time discovery of nearby users without search or
+                friend requests, with ghost mode privacy controls and
+                low-latency real-time messaging.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-pill">Flutter</span>
+                <span class="tech-pill">Supabase</span>
+                <span class="tech-pill">BLE</span>
+                <span class="tech-pill">Riverpod</span>
+                <span class="tech-pill">PostgreSQL</span>
+              </div>
             </div>
-          </div>
+          </a>
 
-          <div class="project-card">
-            <span class="project-tag">Full Stack · AI · Completed</span>
-            <h3>AI Attendance & Academic Assistant</h3>
-            <p>
-              Full-stack web app for faculty attendance and student tools,
-              piloted with 100+ users. Features an AI chatbot for instant
-              academic query responses and automated admin workflows that cut
-              manual workload by 20%.
-            </p>
-            <div class="tech-stack">
-              <span class="tech-pill">MERN Stack</span>
-              <span class="tech-pill">Python</span>
-              <span class="tech-pill">Supabase</span>
-              <span class="tech-pill">AI Chatbot</span>
+          <a
+            class="project-card-link"
+            href="https://github.com/akatanishqc/viberun"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="project-card">
+              <span class="project-tag">Mobile App · In Development</span>
+              <h3>VibeRun</h3>
+              <p>
+                Real-world fitness gamification app inspired by Subway Surfers.
+                Players compete on actual streets, track runs via GPS, and race
+                with 3D avatars in augmented city environments.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-pill">Flutter</span>
+                <span class="tech-pill">Firebase</span>
+                <span class="tech-pill">Google Maps</span>
+                <span class="tech-pill">Riverpod</span>
+                <span class="tech-pill">Ready Player Me</span>
+              </div>
             </div>
-          </div>
+          </a>
 
-          <div class="project-card">
-            <span class="project-tag">AI · In Development</span>
-            <h3>AI Multi-Format Reader & Query System</h3>
-            <p>
-              An AI application that reads and queries DOCX, XLSX, CSV, and
-              image files. Uses PyTorch-based models for object recognition and
-              insight extraction, optimised for large heterogeneous files.
-            </p>
-            <div class="tech-stack">
-              <span class="tech-pill">MERN Stack</span>
-              <span class="tech-pill">PyTorch</span>
-              <span class="tech-pill">RESTful APIs</span>
-              <span class="tech-pill">Open Source</span>
+          <a
+            class="project-card-link"
+            href="https://github.com/akatanishqc/attendance-assistant"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="project-card">
+              <span class="project-tag">Full Stack · AI · Completed</span>
+              <h3>AI Attendance & Academic Assistant</h3>
+              <p>
+                Full-stack web app for faculty attendance and student tools,
+                piloted with 500+ students and faculty. Features an AI chatbot
+                for instant academic query responses and automated admin
+                workflows that cut manual workload by 20%.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-pill">MERN Stack</span>
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">Supabase</span>
+                <span class="tech-pill">AI Chatbot</span>
+              </div>
             </div>
-          </div>
+          </a>
+
+          <a
+            class="project-card-link"
+            href="https://github.com/akatanishqc"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="project-card">
+              <span class="project-tag">AI · In Development</span>
+              <h3>AI Multi-Format Reader & Query System</h3>
+              <p>
+                An AI application that reads and queries DOCX, XLSX, CSV, and
+                image files. Uses PyTorch-based models for object recognition
+                and insight extraction, optimised for large heterogeneous files.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-pill">MERN Stack</span>
+                <span class="tech-pill">PyTorch</span>
+                <span class="tech-pill">RESTful APIs</span>
+                <span class="tech-pill">Open Source</span>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -1089,6 +1146,10 @@
           <h3>Frameworks & Libraries</h3>
           <div class="skills-chips">
             <span class="skill-chip">MERN Stack</span>
+            <span class="skill-chip">React.js</span>
+            <span class="skill-chip">HTML</span>
+            <span class="skill-chip">CSS</span>
+            <span class="skill-chip">Node.js</span>
             <span class="skill-chip">Flutter</span>
             <span class="skill-chip">React Native</span>
             <span class="skill-chip">Next.js</span>
@@ -1104,7 +1165,7 @@
             <span class="skill-chip">PyTorch</span>
             <span class="skill-chip">Anthropic API</span>
             <span class="skill-chip">AI/ML Model Development</span>
-            <span class="skill-chip">Object Recognition</span>
+            <span class="skill-chip">Computer Vision</span>
           </div>
         </div>
         <div class="skills-section">
@@ -1158,11 +1219,14 @@
               National Service Scheme (NSS), KIIT School of Computer Engineering
             </div>
             <p class="timeline-desc">
-              Authored content for awareness campaigns reaching 200+ attendees.
-              Documented large-scale events with 300+ participants and
-              coordinated cross-functional teams for smooth event execution.
-              Collaborated with faculty on rural education communication
-              strategies engaging 80+ students.
+              Authored content for awareness campaigns including skits,
+              newsletters, and event materials reaching 200+ attendees. Wrote
+              scripts for social awareness skits on women's safety and workplace
+              dignity. Documented events such as walkathons and environmental
+              drives with 300+ participants. Collaborated with faculty to design
+              communication strategies for rural education programs engaging 80+
+              students. Coordinated as point of contact for multiple NSS events,
+              leading cross-functional teams for timely execution.
             </p>
           </div>
 

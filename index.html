@@ -409,6 +409,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1rem;
+        align-items: stretch;
       }
 
       .project-card {
@@ -419,13 +420,18 @@
         transition:
           border-color 0.2s,
           transform 0.2s;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
       }
 
-      .project-card-link {
+      a.project-card-link,
+      a.project-card-link:visited {
         text-decoration: none;
         color: inherit;
         display: block;
         border-radius: 16px;
+        background: transparent;
       }
 
       .project-card-link:hover .project-card {
@@ -461,12 +467,14 @@
         font-size: 0.875rem;
         margin-bottom: 1.1rem;
         line-height: 1.65;
+        flex-grow: 1;
       }
 
       .tech-stack {
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
+        margin-top: auto;
       }
 
       .tech-pill {
@@ -1054,7 +1062,7 @@
 
           <a
             class="project-card-link"
-            href="https://github.com/akatanishqc/viberun"
+            href="https://github.com/akatanishqc/VibeRun"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -1078,7 +1086,7 @@
 
           <a
             class="project-card-link"
-            href="https://github.com/akatanishqc/attendance-assistant"
+            href="https://github.com/akatanishqc/bio_att"
             target="_blank"
             rel="noopener noreferrer"
           >

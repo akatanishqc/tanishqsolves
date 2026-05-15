@@ -865,6 +865,99 @@
     </style>
   </head>
   <body>
+    <div
+      id="portfolio-splash"
+      style="
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #f8f7f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        transition: opacity 0.5s ease-out;
+      "
+    >
+      <!-- Monogram mark -->
+      <div
+        id="splash-mark"
+        style="
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: linear-gradient(
+            140deg,
+            #d6d2c7 0%,
+            #b9b39f 45%,
+            #f0ede8 100%
+          );
+          border: 3px solid #e2e0da;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: &quot;DM Serif Display&quot;, Georgia, serif;
+          font-size: 2rem;
+          color: #1a1a18;
+          opacity: 0;
+          transform: scale(0.8);
+          transition:
+            opacity 0.4s ease-out,
+            transform 0.4s ease-out;
+        "
+      >
+        T
+      </div>
+
+      <!-- Name wordmark -->
+      <div
+        id="splash-name"
+        style="
+          font-family: &quot;DM Serif Display&quot;, Georgia, serif;
+          font-size: 2.2rem;
+          letter-spacing: -0.02em;
+          color: #1a1a18;
+          opacity: 0;
+          transform: translateY(12px);
+          transition:
+            opacity 0.4s ease-out,
+            transform 0.4s ease-out;
+        "
+      >
+        Tanishq
+      </div>
+
+      <!-- Tagline -->
+      <div
+        id="splash-tagline"
+        style="
+          font-family: &quot;DM Sans&quot;, system-ui, sans-serif;
+          font-size: 0.72rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #6b6b66;
+          opacity: 0;
+          transition: opacity 0.4s ease-out;
+        "
+      >
+        Builder · Designer · Engineer
+      </div>
+
+      <!-- Loading bar -->
+      <div
+        style="
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 2px;
+          background: #1a1a18;
+          width: 0%;
+          transition: width 1.8s ease-out;
+        "
+        id="splash-bar"
+      ></div>
+    </div>
     <nav>
       <a
         href="#"
@@ -1578,6 +1671,57 @@
 
     <footer><p>Designed & built by Tanishq · 2025</p></footer>
     <div class="toast" id="toast">Message sent! I'll get back to you soon.</div>
+
+    <script>
+      (function () {
+        var splash = document.getElementById("portfolio-splash");
+        var mark = document.getElementById("splash-mark");
+        var name = document.getElementById("splash-name");
+        var tagline = document.getElementById("splash-tagline");
+        var bar = document.getElementById("splash-bar");
+
+        if (!splash) return;
+
+        // Start loading bar immediately
+        requestAnimationFrame(function () {
+          if (bar) bar.style.width = "100%";
+        });
+
+        // Animate mark in
+        setTimeout(function () {
+          if (mark) {
+            mark.style.opacity = "1";
+            mark.style.transform = "scale(1)";
+          }
+        }, 100);
+
+        // Animate name in
+        setTimeout(function () {
+          if (name) {
+            name.style.opacity = "1";
+            name.style.transform = "translateY(0)";
+          }
+        }, 300);
+
+        // Animate tagline in
+        setTimeout(function () {
+          if (tagline) tagline.style.opacity = "1";
+        }, 500);
+
+        // Fade out splash
+        setTimeout(function () {
+          splash.style.opacity = "0";
+          splash.style.pointerEvents = "none";
+        }, 2000);
+
+        // Remove from DOM
+        setTimeout(function () {
+          if (splash.parentNode) {
+            splash.parentNode.removeChild(splash);
+          }
+        }, 2500);
+      })();
+    </script>
 
     <script>
       function showPage(name) {

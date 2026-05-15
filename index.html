@@ -319,7 +319,8 @@
         border: 1px solid var(--border);
       }
       .btn-outline:hover {
-        background: var(--accent-soft);
+        border-color: #1a1a18;
+        background: linear-gradient(135deg, #f0ede8, #e8e4de);
       }
 
       .hero-visual {
@@ -386,6 +387,90 @@
         font-size: 0.92rem;
         font-weight: 500;
         color: var(--text);
+      }
+
+      /* About card accents */
+      .about-card--building {
+        border-left: 3px solid #1565c0;
+        background: #f0f7ff;
+      }
+      .about-card--university {
+        border-left: 3px solid #2e7d32;
+        background: #f1f8f1;
+      }
+      .about-card--stack {
+        border-left: 3px solid #f57f17;
+        background: #fffbf0;
+      }
+      .about-card--building .label { color: #1565c0; }
+      .about-card--university .label { color: #2e7d32; }
+      .about-card--stack .label { color: #f57f17; }
+
+      /* Em underline for hero name */
+      em {
+        font-style: italic;
+        text-decoration: underline;
+        text-decoration-color: #b9b39f;
+        text-underline-offset: 6px;
+        text-decoration-thickness: 2px;
+      }
+
+      /* Skills section cards */
+      .skills-section {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin-bottom: 1rem;
+      }
+      .skills-section h3 {
+        padding-left: 0.75rem;
+        border-bottom: none;
+        margin-bottom: 0.85rem;
+      }
+      .skills-section--languages h3 { border-left: 3px solid #c0392b; color: #c0392b; }
+      .skills-section--frontend h3 { border-left: 3px solid #1565c0; color: #1565c0; }
+      .skills-section--backend h3 { border-left: 3px solid #2e7d32; color: #2e7d32; }
+      .skills-section--databases h3 { border-left: 3px solid #f57f17; color: #f57f17; }
+      .skills-section--ai h3 { border-left: 3px solid #6a1b9a; color: #6a1b9a; }
+      .skills-section--tools h3 { border-left: 3px solid #00838f; color: #00838f; }
+
+      .skill-chip:hover {
+        background: var(--accent-soft);
+        border-color: #aaa;
+        cursor: default;
+      }
+
+      /* Timeline tags and colors */
+      .tl-tag {
+        font-size: 0.62rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        display: inline-block;
+        margin-bottom: 0.35rem;
+      }
+      .tl-tag--orange { background: #fff3e0; color: #f57f17; }
+      .tl-tag--green  { background: #e8f5e9; color: #2e7d32; }
+      .tl-tag--blue   { background: #e3f2fd; color: #1565c0; }
+      .tl-tag--purple { background: #f3e5f5; color: #6a1b9a; }
+
+      .timeline { border-left: none; }
+      .timeline-item { border-left: 1px solid #e2e0da; }
+      .timeline-item .timeline-dot { border: 2px solid var(--bg); }
+      .timeline-item--indie .timeline-dot { background: #f57f17; }
+      .timeline-item--nss .timeline-dot { background: #2e7d32; }
+      .timeline-item--edu .timeline-dot { background: #1565c0; }
+      .timeline-item--lead .timeline-dot { background: #6a1b9a; }
+
+      .timeline-item--indie {
+        background: #fffbf0;
+        border-radius: 12px;
+        padding: 1rem 1rem 1rem 1.75rem;
+        border: 1px solid #f5e6c8;
+        border-left: 3px solid #f57f17;
       }
 
       .avatar-ring {
@@ -504,18 +589,15 @@
 
       /* SKILLS */
       .skills-section {
-        margin-bottom: 2.75rem;
+        /* styles defined earlier to give each section a card-like appearance */
       }
 
       .skills-section h3 {
         font-size: 0.8rem;
         font-weight: 500;
-        color: var(--muted);
         letter-spacing: 0.06em;
         text-transform: uppercase;
         margin-bottom: 0.85rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border);
       }
 
       .skills-chips {
@@ -668,9 +750,15 @@
         align-self: flex-start;
       }
 
+      .contact-form .btn-primary {
+        background: linear-gradient(135deg, #1a1a18 0%, #3a3a36 100%);
+        color: #fff;
+      }
+
       .contact-link:hover {
         border-color: #aaa;
         transform: translateX(4px);
+        border-left: 3px solid var(--text);
       }
 
       .contact-link-icon {
@@ -1129,15 +1217,15 @@
               decoding="async"
             />
           </div>
-          <div class="about-card">
+          <div class="about-card about-card--building">
             <div class="label">Currently building</div>
             <div class="value">VibeRun — Fitness Gamification App</div>
           </div>
-          <div class="about-card">
+          <div class="about-card about-card--university">
             <div class="label">University</div>
             <div class="value">KIIT University · B.Tech CSE · 2027</div>
           </div>
-          <div class="about-card">
+          <div class="about-card about-card--stack">
             <div class="label">Stack</div>
             <div class="value">MERN · Flutter · Python · Go</div>
           </div>
@@ -1378,7 +1466,7 @@
       <div class="container">
         <p class="eyebrow">Toolkit</p>
         <h2>Skills</h2>
-        <div class="skills-section">
+        <div class="skills-section skills-section--languages">
           <h3>Languages</h3>
           <div class="skills-chips">
             <span class="skill-chip">Python</span>
@@ -1390,7 +1478,7 @@
           </div>
         </div>
 
-        <div class="skills-section">
+        <div class="skills-section skills-section--frontend">
           <h3>Frontend & Mobile</h3>
           <div class="skills-chips">
             <span class="skill-chip">React</span>
@@ -1402,7 +1490,7 @@
           </div>
         </div>
 
-        <div class="skills-section">
+        <div class="skills-section skills-section--backend">
           <h3>Backend & Systems</h3>
           <div class="skills-chips">
             <span class="skill-chip">Node.js</span>
@@ -1413,7 +1501,7 @@
           </div>
         </div>
 
-        <div class="skills-section">
+        <div class="skills-section skills-section--databases">
           <h3>Databases & Cloud</h3>
           <div class="skills-chips">
             <span class="skill-chip">PostgreSQL</span>
@@ -1423,7 +1511,7 @@
           </div>
         </div>
 
-        <div class="skills-section">
+        <div class="skills-section skills-section--ai">
           <h3>AI & Machine Learning</h3>
           <div class="skills-chips">
             <span class="skill-chip">PyTorch</span>
@@ -1433,7 +1521,7 @@
           </div>
         </div>
 
-        <div class="skills-section">
+        <div class="skills-section skills-section--tools">
           <h3>Tools</h3>
           <div class="skills-chips">
             <span class="skill-chip">Git</span>
@@ -1450,10 +1538,10 @@
         <p class="eyebrow">Background</p>
         <h2>Experience</h2>
         <div class="timeline">
-          <div class="timeline-item">
+          <div class="timeline-item timeline-item--indie">
             <div class="timeline-dot"></div>
             <div class="timeline-meta">2024 – Present</div>
-            <div class="timeline-title">Indie Developer — VibeRun</div>
+            <div class="timeline-title"><span class="tl-tag tl-tag--orange">Building</span>Indie Developer — VibeRun</div>
             <div class="timeline-org">Personal Project</div>
             <p class="timeline-desc">
               Architecting and building a full-scale fitness gamification
@@ -1462,10 +1550,10 @@
             </p>
           </div>
 
-          <div class="timeline-item">
+          <div class="timeline-item timeline-item--nss">
             <div class="timeline-dot"></div>
             <div class="timeline-meta">Aug 2024 – Aug 2025</div>
-            <div class="timeline-title">Content Writer</div>
+            <div class="timeline-title"><span class="tl-tag tl-tag--green">Completed</span>Content Writer</div>
             <div class="timeline-org">
               National Service Scheme (NSS), KIIT School of Computer Engineering
             </div>
@@ -1481,12 +1569,10 @@
             </p>
           </div>
 
-          <div class="timeline-item">
+          <div class="timeline-item timeline-item--edu">
             <div class="timeline-dot"></div>
             <div class="timeline-meta">2023 – Present · Expected May 2027</div>
-            <div class="timeline-title">
-              B.Tech in Computer Science Engineering
-            </div>
+            <div class="timeline-title"><span class="tl-tag tl-tag--blue">Education</span>B.Tech in Computer Science Engineering</div>
             <div class="timeline-org">KIIT University, Bhubaneswar, Odisha</div>
             <p class="timeline-desc">
               Building AI-driven web and mobile applications with strong
@@ -1495,10 +1581,10 @@
             </p>
           </div>
 
-          <div class="timeline-item">
+          <div class="timeline-item timeline-item--lead">
             <div class="timeline-dot"></div>
             <div class="timeline-meta">2021 – 2023</div>
-            <div class="timeline-title">Head Boy</div>
+            <div class="timeline-title"><span class="tl-tag tl-tag--purple">Leadership</span>Head Boy</div>
             <div class="timeline-org">
               Paramount International School, Delhi (Class XI & XII)
             </div>
@@ -1552,13 +1638,16 @@
               Send Message →
             </button>
           </form>
+          <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#6b6b66;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #e2e0da;">
+            Find me here
+          </p>
           <div class="contact-links">
             <a
               href="https://github.com/akatanishqc"
               target="_blank"
               class="contact-link"
             >
-              <div class="contact-link-icon">
+              <div class="contact-link-icon" style="background:#f0ede8;">
                 <svg
                   width="18"
                   height="18"
@@ -1575,6 +1664,7 @@
                 </svg>
               </div>
               <div>
+                <span style="font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:999px;background:#e8f5e9;color:#2e7d32;display:inline-block;margin-bottom:0.25rem;">Code</span>
                 <div style="font-weight: 500; font-size: 0.875rem">GitHub</div>
                 <div style="font-size: 0.8rem; color: var(--muted)">
                   github.com/akatanishqc
@@ -1582,11 +1672,11 @@
               </div>
             </a>
             <a
-              href="https://www.linkedin.com/in/tanishq-choudhury-a77279365/"
+              href="https://www.linkedin.com/in/tanishq-choudhury/"
               target="_blank"
               class="contact-link"
             >
-              <div class="contact-link-icon">
+              <div class="contact-link-icon" style="background:#e8f0fb;">
                 <svg
                   width="18"
                   height="18"
@@ -1605,11 +1695,12 @@
                 </svg>
               </div>
               <div>
+                <span style="font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:999px;background:#e3f2fd;color:#1565c0;display:inline-block;margin-bottom:0.25rem;">Professional</span>
                 <div style="font-weight: 500; font-size: 0.875rem">
                   LinkedIn
                 </div>
                 <div style="font-size: 0.8rem; color: var(--muted)">
-                  linkedin.com/in/tanishq-choudhury-a77279365/
+                  linkedin.com/in/tanishq-choudhury/
                 </div>
               </div>
             </a>
@@ -1618,7 +1709,7 @@
               target="_blank"
               class="contact-link"
             >
-              <div class="contact-link-icon">
+              <div class="contact-link-icon" style="background:#f5f5f5;">
                 <svg
                   width="18"
                   height="18"
@@ -1631,6 +1722,7 @@
                 </svg>
               </div>
               <div>
+                <span style="font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:999px;background:#f5f5f5;color:#555;display:inline-block;margin-bottom:0.25rem;">Updates</span>
                 <div style="font-weight: 500; font-size: 0.875rem">
                   X (Twitter)
                 </div>
@@ -1640,7 +1732,7 @@
               </div>
             </a>
             <a href="mailto:tanishqc84@gmail.com" class="contact-link">
-              <div class="contact-link-icon">
+              <div class="contact-link-icon" style="background:#fce8e8;">
                 <svg
                   width="18"
                   height="18"
@@ -1658,6 +1750,7 @@
                 </svg>
               </div>
               <div>
+                <span style="font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:999px;background:#fce8e8;color:#c0392b;display:inline-block;margin-bottom:0.25rem;">Direct</span>
                 <div style="font-weight: 500; font-size: 0.875rem">Email</div>
                 <div style="font-size: 0.8rem; color: var(--muted)">
                   tanishqc84@gmail.com

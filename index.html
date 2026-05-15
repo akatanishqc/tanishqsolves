@@ -456,6 +456,21 @@
         margin-bottom: 0.85rem;
       }
 
+      .project-tag--completed {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .project-tag--in-dev {
+        background: #fff8e1;
+        color: #f57f17;
+      }
+
+      .project-tag--live {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+
       .project-card h3 {
         font-family: var(--serif);
         font-size: 1.2rem;
@@ -997,9 +1012,10 @@
             gamification apps.
             <br /><br />
             My work combines backend systems, real-time architectures, and
-            user-centric design, with experience in Python, Java, Golang, Flutter, MERN stack,
-            Supabase, and Firebase. I aim to build products that are not just
-            intelligent, but reliable, performant, and ready for real-world use.
+            user-centric design, with experience in Python, Java, Golang,
+            Flutter, MERN stack, Supabase, and Firebase. I aim to build products
+            that are not just intelligent, but reliable, performant, and ready
+            for real-world use.
           </p>
           <div class="hero-links">
             <button class="btn btn-primary" onclick="showPage('projects')">
@@ -1041,8 +1057,73 @@
       <div class="container">
         <p class="eyebrow">Work</p>
         <h2>Projects</h2>
+        <div
+          style="
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+          "
+        >
+          <span
+            style="
+              font-size: 0.75rem;
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+            "
+          >
+            <span
+              style="
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #2e7d32;
+                display: inline-block;
+              "
+            ></span>
+            Completed
+          </span>
+          <span
+            style="
+              font-size: 0.75rem;
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+            "
+          >
+            <span
+              style="
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #f57f17;
+                display: inline-block;
+              "
+            ></span>
+            In Development
+          </span>
+          <span
+            style="
+              font-size: 0.75rem;
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+            "
+          >
+            <span
+              style="
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #1565c0;
+                display: inline-block;
+              "
+            ></span>
+            Live
+          </span>
+        </div>
         <div class="projects-grid">
-
           <a
             class="project-card-link"
             href="https://github.com/akatanishqc/GovAssistOps"
@@ -1050,7 +1131,9 @@
             rel="noopener noreferrer"
           >
             <div class="project-card">
-              <span class="project-tag">AI · Full Stack · Completed</span>
+              <span class="project-tag project-tag--completed"
+                >AI · Full Stack</span
+              >
               <h3>GovAssistOps</h3>
               <p>
                 AI-powered multilingual complaint triage platform for Indian
@@ -1067,14 +1150,14 @@
               </div>
             </div>
           </a>
-           <a
+          <a
             class="project-card-link"
             href="https://github.com/akatanishqc/election-bot"
             target="_blank"
             rel="noopener noreferrer"
           >
             <div class="project-card">
-              <span class="project-tag">AI · RAG · Completed</span>
+              <span class="project-tag project-tag--completed">AI · RAG</span>
               <h3>ECI Election Information Bot</h3>
               <p>
                 RAG-based system answering voter queries using official ECI
@@ -1089,7 +1172,7 @@
                 <span class="tech-pill">Supabase</span>
               </div>
             </div>
-           </a>
+          </a>
           <a
             class="project-card-link"
             href="https://github.com/akatanishqc/pulse"
@@ -1097,7 +1180,7 @@
             rel="noopener noreferrer"
           >
             <div class="project-card">
-              <span class="project-tag">Mobile App · Completed</span>
+              <span class="project-tag project-tag--completed">Mobile App</span>
               <h3>Pulse</h3>
               <p>
                 Hyperlocal social discovery app powered by Bluetooth Low Energy.
@@ -1122,7 +1205,9 @@
             rel="noopener noreferrer"
           >
             <div class="project-card">
-              <span class="project-tag">Mobile App · In Development</span>
+              <span class="project-tag project-tag--in-dev"
+                >Mobile App · In Development</span
+              >
               <h3>VibeRun</h3>
               <p>
                 Real-world fitness gamification app inspired by Subway Surfers.
@@ -1141,12 +1226,41 @@
 
           <a
             class="project-card-link"
+            href="https://storesignal.onrender.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="project-card">
+              <span class="project-tag project-tag--live"
+                >AI · Full Stack · Live</span
+              >
+              <h3>StoreSignal</h3>
+              <p>
+                AI Representation Optimizer for Shopify stores. Analyzes how AI
+                shopping agents perceive a store — scoring products across 5
+                dimensions, surfacing gaps, and generating suggested rewrites.
+                Built for the Kasparro Agentic Commerce Hackathon (Track 5).
+              </p>
+              <div class="tech-stack">
+                <span class="tech-pill">Next.js 14</span>
+                <span class="tech-pill">Groq API</span>
+                <span class="tech-pill">Shopify Admin API</span>
+                <span class="tech-pill">TypeScript</span>
+                <span class="tech-pill">Tailwind</span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            class="project-card-link"
             href="https://github.com/akatanishqc/bio_att"
             target="_blank"
             rel="noopener noreferrer"
           >
             <div class="project-card">
-              <span class="project-tag">Full Stack · AI · Completed</span>
+              <span class="project-tag project-tag--completed"
+                >Full Stack · AI</span
+              >
               <h3>AI Attendance & Academic Assistant</h3>
               <p>
                 Full-stack web app for faculty attendance and student tools,

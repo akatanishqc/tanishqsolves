@@ -389,6 +389,25 @@
         color: var(--text);
       }
 
+      .about-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .about-card--building:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(21, 101, 192, 0.12);
+      }
+
+      .about-card--university:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
+      }
+
+      .about-card--stack:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(245, 127, 23, 0.12);
+      }
+
       /* About card accents */
       .about-card--building {
         border-left: 3px solid #1565c0;
@@ -1638,10 +1657,11 @@
               Send Message →
             </button>
           </form>
-          <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#6b6b66;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #e2e0da;">
-            Find me here
-          </p>
-          <div class="contact-links">
+          <div class="contact-right">
+            <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#6b6b66;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #e2e0da;">
+              Find me here
+            </p>
+            <div class="contact-links">
             <a
               href="https://github.com/akatanishqc"
               target="_blank"
@@ -1757,6 +1777,7 @@
                 </div>
               </div>
             </a>
+            </div>
           </div>
         </div>
       </div>

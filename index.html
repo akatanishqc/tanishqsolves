@@ -2037,11 +2037,44 @@
 
       // Contact form
       var PROD_API_BASE = "https://tanishqsolves.onrender.com";
-      var API_BASE =
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1"
-          ? "http://localhost:3000"
-          : PROD_API_BASE;
+      var LOCAL_API_BASES = ["http://localhost:3000", "http://localhost:3005"];
+
+      async function probeApiBase(base) {
+        try {
+          var controller = new AbortController();
+          var timeout = setTimeout(function () {
+            controller.abort();
+          }, 800);
+          var res = await fetch(base + "/api/health", {
+            method: "GET",
+            signal: controller.signal,
+          });
+          clearTimeout(timeout);
+          return res.ok ? base : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      var API_BASE_PROMISE = (async function () {
+        if (
+          window.location.protocol === "file:" ||
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1" ||
+          window.location.hostname === "::1"
+        ) {
+          for (var i = 0; i < LOCAL_API_BASES.length; i += 1) {
+            var localBase = await probeApiBase(LOCAL_API_BASES[i]);
+            if (localBase) return localBase;
+          }
+        }
+
+        return PROD_API_BASE;
+      })();
+
+      async function getApiBase() {
+        return await API_BASE_PROMISE;
+      }
 
       async function handleSubmit(e) {
         e.preventDefault();
@@ -2050,10 +2083,11 @@
         var name = document.getElementById("c-name").value.trim();
         var email = document.getElementById("c-email").value.trim();
         var message = document.getElementById("c-message").value.trim();
+        var apiBase = await getApiBase();
         submitBtn.disabled = true;
         submitBtn.textContent = "sending...";
         try {
-          var res = await fetch(API_BASE + "/api/contact", {
+          var res = await fetch(apiBase + "/api/contact", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, message }),

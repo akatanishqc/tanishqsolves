@@ -59,6 +59,44 @@
         flex-direction: column;
       }
 
+      .cursor-trail {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--text);
+        border-radius: 50%;
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate3d(-50%, -50%, 0) scale(1);
+        transition:
+          width 0.18s ease,
+          height 0.18s ease,
+          opacity 0.18s ease,
+          border-color 0.18s ease;
+      }
+      .cursor-trail--hover {
+        width: 36px;
+        height: 36px;
+        opacity: 0.7;
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--text);
+        opacity: 0.5;
+        transform: scaleX(0);
+        transform-origin: left center;
+        z-index: 350;
+        pointer-events: none;
+      }
+
       /* subtle noise grain */
       body::after {
         content: "";
@@ -193,6 +231,22 @@
       .nav-links a:hover::after,
       .nav-links a.active::after {
         transform: scaleX(1);
+      }
+
+      .nav-active-dot {
+        position: absolute;
+        left: 0;
+        bottom: 11px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--green);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          transform 0.3s ease,
+          opacity 0.2s ease;
+        z-index: 1;
       }
 
       /* Hamburger */
@@ -380,8 +434,29 @@
         letter-spacing: 0.06em;
         margin-bottom: 0.35rem;
       }
+      .hero-cmd.typing-line::after {
+        content: "";
+        display: inline-block;
+        width: 0.6ch;
+        height: 1em;
+        margin-left: 2px;
+        border-right: 1px solid var(--text);
+        transform: translateY(1px);
+        animation: typing-cursor-blink 0.8s steps(1) infinite;
+      }
       .hero-cmd span {
         color: var(--muted);
+      }
+
+      @keyframes typing-cursor-blink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
       }
 
       .hero-text h1 {
@@ -754,6 +829,35 @@
         background: var(--surface2);
       }
 
+      @keyframes skill-chip-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .page.skills-animating .skill-chip {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: skill-chip-in 300ms ease-out forwards;
+        animation-delay: var(--chip-delay, 0ms);
+      }
+
+      @media (pointer: fine) {
+        .project-card-link {
+          perspective: 900px;
+        }
+
+        .project-card {
+          transform-style: preserve-3d;
+          will-change: transform;
+        }
+      }
+
       /* ── TIMELINE ── */
       .timeline {
         display: flex;
@@ -1108,6 +1212,9 @@
 
       /* ── RESPONSIVE ── */
       @media (max-width: 720px) {
+        .nav-active-dot {
+          display: none;
+        }
         .nav-links {
           display: none;
         }
@@ -1996,6 +2103,18 @@
         document.getElementById("nav-" + name).classList.add("active");
         var mob = document.getElementById("mob-" + name);
         if (mob) mob.classList.add("active");
+        if (typeof window.updateActiveNavIndicator === "function") {
+          window.updateActiveNavIndicator();
+        }
+        if (typeof window.resetScrollProgress === "function") {
+          window.resetScrollProgress();
+        }
+        if (
+          name === "skills" &&
+          typeof window.animateSkillsPage === "function"
+        ) {
+          window.animateSkillsPage();
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -2089,6 +2208,246 @@
         }
         function updateMorph() {
           var scrollY = Math.max(window.scrollY || 0, 0);
+
+          // Interactive enhancements
+          (function () {
+            var doc = document;
+            var nav = doc.querySelector("nav");
+            var progressBar = doc.createElement("div");
+            progressBar.className = "scroll-progress";
+            progressBar.id = "scroll-progress";
+            doc.body.appendChild(progressBar);
+
+            var cursorTrail = doc.createElement("div");
+            cursorTrail.className = "cursor-trail";
+            cursorTrail.id = "cursor-trail";
+            doc.body.appendChild(cursorTrail);
+
+            var navDot = doc.createElement("div");
+            navDot.className = "nav-active-dot";
+            navDot.id = "nav-active-dot";
+            if (nav) nav.appendChild(navDot);
+
+            var prefersFinePointer =
+              window.matchMedia("(pointer: fine)").matches;
+            var scrollRaf = 0;
+            var cursorRaf = 0;
+            var cursorTargetX = window.innerWidth / 2;
+            var cursorTargetY = window.innerHeight / 2;
+            var cursorX = cursorTargetX;
+            var cursorY = cursorTargetY;
+            var typingStarted = false;
+
+            function setProgress(value) {
+              progressBar.style.transform =
+                "scaleX(" + Math.max(0, Math.min(1, value)) + ")";
+            }
+
+            function updateScrollProgress() {
+              var scrollTop = Math.max(window.scrollY || 0, 0);
+              var maxScroll = Math.max(
+                document.documentElement.scrollHeight - window.innerHeight,
+                0,
+              );
+              setProgress(maxScroll > 0 ? scrollTop / maxScroll : 0);
+            }
+
+            function scheduleScrollProgress() {
+              if (scrollRaf) return;
+              scrollRaf = window.requestAnimationFrame(function () {
+                scrollRaf = 0;
+                updateScrollProgress();
+              });
+            }
+
+            function resetScrollProgress() {
+              setProgress(0);
+            }
+
+            function updateActiveNavIndicator() {
+              if (!nav || !navDot) return;
+              var activeLink = doc.querySelector(".nav-links a.active");
+              if (!activeLink) {
+                navDot.style.opacity = "0";
+                return;
+              }
+              var navRect = nav.getBoundingClientRect();
+              var linkRect = activeLink.getBoundingClientRect();
+              var x = linkRect.left + linkRect.width / 2 - navRect.left - 2;
+              navDot.style.transform = "translateX(" + x.toFixed(2) + "px)";
+              navDot.style.opacity = "1";
+            }
+
+            window.updateActiveNavIndicator = updateActiveNavIndicator;
+            window.resetScrollProgress = resetScrollProgress;
+            window.animateSkillsPage = animateSkillsPage;
+
+            function animateSkillsPage() {
+              var page = doc.getElementById("page-skills");
+              if (!page || !page.classList.contains("visible")) return;
+              var chips = page.querySelectorAll(".skill-chip");
+              page.classList.remove("skills-animating");
+              chips.forEach(function (chip, index) {
+                chip.style.setProperty("--chip-delay", index * 30 + "ms");
+              });
+              page.offsetWidth;
+              page.classList.add("skills-animating");
+            }
+
+            function typeLine(element, text, onDone) {
+              var index = 0;
+              element.classList.add("typing-line");
+              element.textContent = "";
+
+              function step() {
+                element.textContent = text.slice(0, index);
+                if (index < text.length) {
+                  index += 1;
+                  window.setTimeout(step, 55);
+                } else if (onDone) {
+                  onDone();
+                }
+              }
+
+              step();
+            }
+
+            function startAboutTyping() {
+              if (typingStarted) return;
+              typingStarted = true;
+              var aboutLines = doc.querySelectorAll(
+                "#page-about .hero-text .hero-cmd",
+              );
+              if (aboutLines.length < 3) return;
+              var firstLine = aboutLines[0];
+              var statusLine = aboutLines[2];
+              typeLine(firstLine, "$ whoami", function () {
+                window.setTimeout(function () {
+                  typeLine(statusLine, "$ status_");
+                }, 180);
+              });
+            }
+
+            function animateCursor() {
+              cursorRaf = 0;
+              cursorX += (cursorTargetX - cursorX) * 0.14;
+              cursorY += (cursorTargetY - cursorY) * 0.14;
+              cursorTrail.style.left = cursorX + "px";
+              cursorTrail.style.top = cursorY + "px";
+              if (
+                Math.abs(cursorTargetX - cursorX) > 0.1 ||
+                Math.abs(cursorTargetY - cursorY) > 0.1
+              ) {
+                cursorRaf = window.requestAnimationFrame(animateCursor);
+              }
+            }
+
+            function scheduleCursor() {
+              if (!cursorRaf) {
+                cursorRaf = window.requestAnimationFrame(animateCursor);
+              }
+            }
+
+            if (prefersFinePointer) {
+              window.addEventListener(
+                "pointermove",
+                function (e) {
+                  cursorTargetX = e.clientX;
+                  cursorTargetY = e.clientY;
+                  scheduleCursor();
+                },
+                { passive: true },
+              );
+
+              doc.querySelectorAll("a, button").forEach(function (element) {
+                element.addEventListener("mouseenter", function () {
+                  cursorTrail.classList.add("cursor-trail--hover");
+                  scheduleCursor();
+                });
+                element.addEventListener("mouseleave", function () {
+                  cursorTrail.classList.remove("cursor-trail--hover");
+                  scheduleCursor();
+                });
+              });
+            }
+
+            if (prefersFinePointer) {
+              doc
+                .querySelectorAll(".project-card-link")
+                .forEach(function (link) {
+                  var card = link.querySelector(".project-card");
+                  if (!card) return;
+                  var state = {
+                    active: false,
+                    rx: 0,
+                    ry: 0,
+                    targetRx: 0,
+                    targetRy: 0,
+                    raf: 0,
+                  };
+
+                  function renderTilt() {
+                    state.raf = 0;
+                    state.rx += (state.targetRx - state.rx) * 0.16;
+                    state.ry += (state.targetRy - state.ry) * 0.16;
+                    card.style.transform =
+                      "rotateX(" +
+                      state.rx.toFixed(2) +
+                      "deg) rotateY(" +
+                      state.ry.toFixed(2) +
+                      "deg)";
+                    if (
+                      Math.abs(state.targetRx - state.rx) > 0.03 ||
+                      Math.abs(state.targetRy - state.ry) > 0.03
+                    ) {
+                      state.raf = window.requestAnimationFrame(renderTilt);
+                    }
+                  }
+
+                  function scheduleTilt() {
+                    if (!state.raf) {
+                      state.raf = window.requestAnimationFrame(renderTilt);
+                    }
+                  }
+
+                  link.addEventListener("pointerenter", function () {
+                    state.active = true;
+                    scheduleTilt();
+                  });
+
+                  link.addEventListener("pointermove", function (e) {
+                    var rect = card.getBoundingClientRect();
+                    var x = (e.clientX - rect.left) / rect.width;
+                    var y = (e.clientY - rect.top) / rect.height;
+                    state.targetRy = (x - 0.5) * 12;
+                    state.targetRx = (0.5 - y) * 12;
+                    scheduleTilt();
+                  });
+
+                  link.addEventListener("pointerleave", function () {
+                    state.active = false;
+                    state.targetRx = 0;
+                    state.targetRy = 0;
+                    scheduleTilt();
+                  });
+                });
+            }
+
+            window.addEventListener("scroll", scheduleScrollProgress, {
+              passive: true,
+            });
+            window.addEventListener("resize", function () {
+              updateActiveNavIndicator();
+              scheduleScrollProgress();
+            });
+
+            updateActiveNavIndicator();
+            updateScrollProgress();
+            window.setTimeout(
+              startAboutTyping,
+              doc.getElementById("portfolio-splash") ? 2750 : 0,
+            );
+          })();
           var maxScroll = Math.max(
             document.documentElement.scrollHeight - window.innerHeight,
             0,

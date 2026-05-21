@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TC logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#18181c" />
+      <stop offset="100%" stop-color="#0c0c0e" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+  <rect x="7" y="7" width="50" height="50" rx="13" fill="none" stroke="#2a2a31" stroke-width="1.5" />
+  <circle cx="32" cy="32" r="18" fill="none" stroke="#e8e6e0" stroke-opacity="0.16" stroke-width="1.5" />
+  <text
+    x="32"
+    y="37"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="-1"
+    fill="#e8e6e0"
+  >
+    TC
+  </text>
+</svg>

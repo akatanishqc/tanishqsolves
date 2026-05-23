@@ -574,37 +574,51 @@
       }
 
       /* ════════════════════════════════════════
-         PHOTO MORPH — the proper implementation
+         PHOTO MORPH
 
-         Outer wrapper (.photo-morph-wrap):
-           • Fixed layout space via aspect-ratio 3/4
-           • Never resizes — stat cards never jump
-           • position: relative so shell can center inside it
+         No wrapper with fixed aspect-ratio.
+         The shell itself is the only element.
+         It shrinks via transform: scale() so its
+         layout footprint collapses naturally —
+         stat cards follow the photo upward.
 
-         Inner shell (#profile-photo-shell):
-           • width shrinks 100% → 58% via CSS calc on --morph
-           • border-radius grows 6px → circle via CSS calc on --morph
-           • opacity fades 1 → 0.6 via CSS calc on --morph
-           • JS sets --morph (0→1) from scrollY / threshold
-           • transform is ONLY used by tilt JS — morph never touches it
+         scale(1 - 0.42 * morph) shrinks to ~58% size.
+         transform-origin: top center means it
+         shrinks upward into its top edge, pulling
+         the cards below up with it automatically.
+
+         margin-bottom compensates for the freed
+         space so cards don't gap — calculated as:
+           -(naturalHeight * 0.42 * morph)
+         but we use a simpler CSS approach:
+         translateY to pull cards up instead.
+
+         Actually the cleanest no-JS approach:
+         Use scale + a negative margin-bottom driven
+         by a CSS custom property set by JS.
          ════════════════════════════════════════ */
       .photo-morph-wrap {
+        /* wrapper shrinks its bottom to follow the photo */
         width: 100%;
-        aspect-ratio: 3 / 4;
         position: relative;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
+        /* padding-bottom trick: actual height controlled by JS via --wrap-pb */
+        padding-bottom: 0;
+        overflow: visible;
       }
 
       .profile-photo-shell {
         --morph: 0;
 
-        /* width drives the shrink — no transform scale, no margin tricks */
-        width: calc(100% - 42% * var(--morph));
+        width: 100%;
+        display: block;
+        position: relative;
 
-        position: absolute;
-        top: 0;
+        /* Scale shrinks the photo. transform-origin top center
+           means the top stays fixed, bottom moves up.
+           The wrapper height is set by JS to match actual rendered height. */
+        transform-style: preserve-3d;
+        transform-origin: top center;
+        transform: perspective(900px) scale(calc(1 - 0.42 * var(--morph)));
 
         border-radius: calc(6px + (9999px - 6px) * var(--morph));
         outline: 1px solid var(--border2);
@@ -618,13 +632,8 @@
           calc(40px + 28px * var(--morph))
           rgba(0, 0, 0, calc(0.45 + 0.25 * var(--morph)));
 
-        /* tilt effect lives on transform — morph never touches transform */
-        transform-style: preserve-3d;
-        transform: perspective(800px) rotateX(0deg) rotateY(0deg);
-        will-change: transform;
-
+        will-change: transform, opacity;
         transition: box-shadow 0.4s ease;
-        /* width/border-radius/opacity are driven by CSS var — instant, no transition needed */
       }
 
       .profile-photo-shell::after {
@@ -649,8 +658,8 @@
         display: block;
         border-radius: inherit;
         background: var(--bg3);
-        /* grayscale increases as morph increases */
         filter: grayscale(calc(0.45 * var(--morph)));
+        /* --morph is on the parent shell, so inherit it here */
       }
 
       /* ── STAT CARDS ── */
@@ -1700,21 +1709,12 @@
           </div>
           <p class="hero-lead">
             Building
-            <strong>scalable, real-time AI-powered products</strong> across web
+            <strong>scalable, real-time AI-powered systems</strong> across web
             and mobile — from multilingual complaint triage platforms and
-            RAG-powered knowledge systems to BLE-driven social discovery
-            networks and live GPS gamification experiences. Driven by a passion
-            for turning ambitious ideas into intuitive, high-impact software.
-          </p>
-
-          <p class="hero-lead">
-            B.Tech Computer Science student at
-            <strong>KIIT University (2027)</strong>, specializing in full-stack
-            development, system design, and applied AI. Committed to engineering
-            solutions that are not only intelligent and innovative, but also
-            <strong
-              >reliable, performant, and production-ready at scale.</strong
-            >
+            RAG-based information systems to BLE-driven social apps and live GPS
+            gamification.<br /><br />KIIT University B.Tech CSE student (2027)
+            focused on products that are not just intelligent, but
+            <strong>reliable, performant, and production-ready.</strong>
           </p>
           <div class="hero-links">
             <button class="btn btn-primary" onclick="showPage('projects')">
@@ -2583,32 +2583,53 @@
       })();
 
       /* ══════════════════════════════════════════════════
-         SCROLL MORPH
-         Sets --morph (0 → 1) on #profile-photo-shell based
-         on how far the user has scrolled the page.
-         Threshold: full morph at 80% of viewport height scrolled.
-         CSS then drives: width, border-radius, opacity, grayscale.
-         Does NOT touch transform (that's owned by tilt).
+         SCROLL MORPH + SPACE COLLAPSE
+
+         Approach: scale(1 - 0.42*morph) with transform-origin
+         top center. The shell visually shrinks from the bottom up.
+         To collapse the freed space so cards follow, we update
+         the wrapper's height to match the shell's rendered height
+         after scaling. JS reads naturalHeight and sets wrapper
+         max-height accordingly each frame.
       ══════════════════════════════════════════════════ */
       (function initMorph() {
         var shell = document.getElementById("profile-photo-shell");
-        if (!shell) return;
+        var wrap = shell && shell.parentElement; // .photo-morph-wrap
+        if (!shell || !wrap) return;
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
           return;
 
         var ticking = false;
         var lastMorph = -1;
+        var morphVal = 0; // current morph, shared with tilt
 
         function applyMorph() {
           var scrollY = window.scrollY || window.pageYOffset || 0;
-          var threshold = window.innerHeight * 0.8;
-          var morph = Math.min(Math.max(scrollY / threshold, 0), 1);
-          if (Math.abs(morph - lastMorph) >= 0.002) {
-            lastMorph = morph;
-            shell.style.setProperty("--morph", morph.toFixed(4));
+          var threshold = window.innerHeight * 0.75;
+          morphVal = Math.min(Math.max(scrollY / threshold, 0), 1);
+
+          if (Math.abs(morphVal - lastMorph) >= 0.002) {
+            lastMorph = morphVal;
+
+            /* 1. Update CSS var so border-radius/opacity/grayscale update */
+            shell.style.setProperty("--morph", morphVal.toFixed(4));
+
+            /* 2. Collapse wrapper height to match scaled photo height.
+                  naturalH = shell.offsetHeight (full size).
+                  scaledH  = naturalH * (1 - 0.42 * morph).
+                  Set wrap height to scaledH so cards sit flush below. */
+            var naturalH = shell.offsetHeight;
+            var scaledH = naturalH * (1 - 0.42 * morphVal);
+            wrap.style.height = scaledH.toFixed(1) + "px";
           }
           ticking = false;
         }
+
+        /* Also recalculate on resize */
+        window.addEventListener("resize", function () {
+          wrap.style.height = ""; // reset, let it recalculate
+          applyMorph();
+        });
 
         window.addEventListener(
           "scroll",
@@ -2621,13 +2642,27 @@
           { passive: true },
         );
 
-        applyMorph();
+        /* Set initial wrapper height once image has loaded */
+        var img = shell.querySelector("img");
+        function init() {
+          wrap.style.height = shell.offsetHeight + "px";
+          applyMorph();
+        }
+        if (img && !img.complete) {
+          img.addEventListener("load", init);
+        } else {
+          init();
+        }
       })();
 
       /* ══════════════════════════════════════════════════
          TILT (hover, desktop only)
-         Drives rotateX/rotateY on transform.
-         Morph never touches transform so no conflict.
+         Combines with morph scale via CSS transform.
+         We build the full transform string each tick:
+           perspective(900px)
+           scale(1 - 0.42*morph)   ← morph component
+           rotateY(x) rotateX(y)   ← tilt component
+         Reading --morph from the shell's computed style.
       ══════════════════════════════════════════════════ */
       (function initTilt() {
         var shell = document.getElementById("profile-photo-shell");
@@ -2648,30 +2683,35 @@
           return a + (b - a) * n;
         }
 
+        function getScale() {
+          /* Read current --morph to include in transform */
+          var m = parseFloat(shell.style.getPropertyValue("--morph")) || 0;
+          return 1 - 0.42 * m;
+        }
+
+        function buildTransform(rx, ry) {
+          var s = getScale();
+          return (
+            "perspective(900px) scale(" +
+            s.toFixed(4) +
+            ") rotateY(" +
+            rx.toFixed(3) +
+            "deg) rotateX(" +
+            ry.toFixed(3) +
+            "deg)"
+          );
+        }
+
         function tick() {
           curX = lerp(curX, tgtX, 0.1);
           curY = lerp(curY, tgtY, 0.1);
-          shell.style.transform =
-            "perspective(900px) rotateY(" +
-            curX.toFixed(3) +
-            "deg) rotateX(" +
-            curY.toFixed(3) +
-            "deg)";
+          shell.style.transform = buildTransform(curX, curY);
           if (Math.abs(curX - tgtX) > 0.005 || Math.abs(curY - tgtY) > 0.005) {
             rafId = requestAnimationFrame(tick);
           } else {
-            shell.style.transform =
-              "perspective(900px) rotateY(" +
-              tgtX +
-              "deg) rotateX(" +
-              tgtY +
-              "deg)";
+            /* settled — remove inline transform so CSS var takes over */
+            if (!isHover) shell.style.transform = "";
             rafId = null;
-            /* once settled back to 0,0 after leave, clear the inline transform
-               so CSS default (none) takes over cleanly */
-            if (!isHover && tgtX === 0 && tgtY === 0) {
-              shell.style.transform = "";
-            }
           }
         }
 
@@ -2690,8 +2730,8 @@
           if (!bounds) bounds = shell.getBoundingClientRect();
           var x = (e.clientX - bounds.left) / bounds.width - 0.5;
           var y = (e.clientY - bounds.top) / bounds.height - 0.5;
-          tgtX = x * 12;
-          tgtY = -y * 9;
+          tgtX = x * 10;
+          tgtY = -y * 7;
           startRaf();
         });
 
